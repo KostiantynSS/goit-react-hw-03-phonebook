@@ -33,6 +33,19 @@ export class App extends Component {
       contacts: contacts.filter(({ name }) => name !== data),
     }));
   };
+  componentDidMount() {
+    const contactsJson = JSON.parse(localStorage.getItem('contacts'));
+    if (localStorage.getItem('contacts') && contactsJson.length > 0) {
+      this.setState({ contacts: contactsJson });
+    } else {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.contacts !== prevState.contacts) {
+      localStorage.setItem('contacts', JSON.stringify(this.state.contacts));
+    }
+  }
   render() {
     const { contacts, filter } = this.state;
     const normalizedFilter = filter.toLowerCase();
